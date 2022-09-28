@@ -1,23 +1,12 @@
-# import time
-# from flask import Flask
-
-# app = Flask(__name__)
-
-# @app.route('/time')
-# def get_current_time():
-#     return {'time': time.time()}
-
-from flask import Flask, render_template, request, flash, make_response
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:postgres@localhost/DB_NAME'
 
 db = SQLAlchemy(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:law623@localhost:5433/flasksql_1'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-# app.secret_key = 'law623'
 
 class Todos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -63,11 +52,12 @@ def delete_task(id):
     db.session.commit()
     return f'Todo (id: {id}) deleted!'
 
+# update a todo (if checked or want to change name of todo)
 @app.route('/updatetask/<id>', methods=['PUT'])
 def update_task(id):
     task = Todos.query.filter_by(id=id)
     todo = request.json['todo']
-    checked = False
+    checked = request.json['checked']
     task.update(dict(task_name = todo, checked = checked))
     db.session.commit()
     return {'task': format_todo(task.one())}

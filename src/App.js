@@ -2,40 +2,65 @@ import React, { useState, useEffect } from 'react';
 import ToDoList from './components/ToDoList'
 import './assets/App.css';
 
-// data = [{todo: string, checked: boolean}]
-
 function App() {
-  const [currentTime, setCurrentTime] = useState(1)
-  const [todoList, setTodoList] = useState([
-    {
-      todo: 'Feed Brutus',
-      checked: true,
-    },
-    {
-      todo: 'Feed Kiki',
-      checked: true,
-    },
-    {
-      todo: 'Vacuum the house',
-      checked: false,
-    },
-])
+  const [todoList, setTodoList] = useState([])
 
   useEffect(() => {
-    
-    fetch('/addtask')
-    .then(res => res.json()
-    .then(data => {
-      console.log(data)
-    }))
+    setTodos()
 
+    // return function cleanup (){
+    //   deleteFirstTodo()
+    // }
   },[])
+
+  async function deleteFirstTodo() {
+    if (todoList[0]) {
+      try {
+        const response = await fetch(`/deletetask/${todoList[0].id}`, {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }
+        })
+  
+        const deleteMessage = await response.json()
+        console.log(deleteMessage)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
+  // set the todos to todo state
+   async function setTodos() {
+    try {
+      const todos = await getTodos()
+      console.log(todos)
+      setTodoList(todos.tasks)
+    } catch(e) {
+      console.log(e)
+    }
+
+  }
+
+  // gets all todos
+  async function getTodos() {
+    const response = await fetch('/tasks')
+    
+    if (response.ok) {
+      return response.json()
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+  }
 
   return (
     <div className="App">
       <header className="App-header pt-5">
         To-Do List
-        <ToDoList todos={todoList}/>
+        <ToDoList todos={todoList} setTodoList={setTodoList} setTodos={setTodos}/>
       </header>
     </div>
   );
