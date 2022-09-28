@@ -24,7 +24,7 @@ function ToDoInput({ todos, setTodoList, setTodos }) {
             const data = await response.json()
             console.log(data)
             setNewTask('')
-            setTodoList([...todos, newTodo])
+            setTodoList([...todos, {...newTodo, id:data.id}])
         } catch (e) {
             console.log(e)
         }
