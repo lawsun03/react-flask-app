@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ToDoList from './components/ToDoList'
+import './assets/App.css';
+
+// data = [{todo: string, checked: boolean}]
 
 function App() {
   const [currentTime, setCurrentTime] = useState(1)
+  const [todoList, setTodoList] = useState([
+    {
+      todo: 'Feed Brutus',
+      checked: true,
+    },
+    {
+      todo: 'Feed Kiki',
+      checked: true,
+    },
+    {
+      todo: 'Vacuum the house',
+      checked: false,
+    },
+])
 
   useEffect(() => {
-    fetch('/time').then(res => res.json().then(data => {
-      setCurrentTime(data.time);
+    
+    fetch('/addtask')
+    .then(res => res.json()
+    .then(data => {
+      console.log(data)
     }))
+
   },[])
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <div>The current time is {currentTime}.</div>
+      <header className="App-header pt-5">
+        To-Do List
+        <ToDoList todos={todoList}/>
       </header>
     </div>
   );

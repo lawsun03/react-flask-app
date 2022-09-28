@@ -1,0 +1,26 @@
+p {
+  text-align: center;
+  min-height: 80vh;
+}
+
+.App-header {
+  background-color: rgb(221, 218, 218);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  font-weight: 600;
+}
+
+.background {
+  height: 80vh;
+  background-color: green;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: 1rem;
+}
