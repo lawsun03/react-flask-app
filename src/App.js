@@ -7,16 +7,14 @@ function App() {
 
   useEffect(() => {
     setTodos()
-
-    // return function cleanup (){
-    //   deleteFirstTodo()
-    // }
   },[])
 
-  async function deleteFirstTodo() {
-    if (todoList[0]) {
+  async function deleteTodo(id) {
+
+    setTodoList(todoList.filter((todo) => todo.id !== id))
+    
       try {
-        const response = await fetch(`/deletetask/${todoList[0].id}`, {
+        const response = await fetch(`/deletetask/${id}`, {
           method: 'DELETE',
           headers: {
             Accept: 'application/json',
@@ -24,12 +22,11 @@ function App() {
           }
         })
   
-        const deleteMessage = await response.json()
+        const deleteMessage = await response.text()
         console.log(deleteMessage)
       } catch (e) {
         console.log(e)
       }
-    }
   }
 
   // set the todos to todo state
@@ -60,7 +57,7 @@ function App() {
     <div className="App">
       <header className="App-header pt-5">
         To-Do List
-        <ToDoList todos={todoList} setTodoList={setTodoList} setTodos={setTodos}/>
+        <ToDoList todos={todoList} setTodoList={setTodoList} deleteTodo={deleteTodo} setTodos={setTodos}/>
       </header>
     </div>
   );

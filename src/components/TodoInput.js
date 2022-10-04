@@ -9,6 +9,7 @@ function ToDoInput({ todos, setTodoList, setTodos }) {
         const newTodo = {
             todo: newTask,
             checked: false,
+            order: todos[todos.length - 1] ? todos[todos.length - 1].order + 1 : 1
         }
 
         try {
@@ -22,7 +23,8 @@ function ToDoInput({ todos, setTodoList, setTodos }) {
             })
 
             const data = await response.json()
-            console.log(data)
+            console.log('newTodo',newTodo)
+            console.log('response', data)
             setNewTask('')
             setTodoList([...todos, {...newTodo, id:data.id}])
         } catch (e) {

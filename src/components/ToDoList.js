@@ -3,15 +3,44 @@ import ToDoItem from './ToDoItem'
 import ToDoInput from './TodoInput'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
-function ToDoList({todos, setTodos, setTodoList}) {
+function ToDoList({todos, setTodos, setTodoList, deleteTodo}) {
 
-  function handleOnDragEnd(result) {
+  async function handleOnDragEnd(result) {
     if (!result.destination) return;
     const items = Array.from(todos)
     const [reorderedItem] = items.splice(result.source.index, 1)
+
+    let referenceIndMinus = items[result.destination.index - 1] ? items[result.destination.index - 1].order : 0
+    let referenceIndPlus = items[result.destination.index] ? items[result.destination.index].order : result.destination.index + 1
+    let newOrder = referenceIndMinus + ((referenceIndPlus - (referenceIndMinus)) / 2)
+
+    reorderedItem.order = newOrder
+
     items.splice(result.destination.index, 0, reorderedItem)
 
     setTodoList(items)
+
+    const updateTask = {
+      todo: reorderedItem.todo,
+      checked: reorderedItem.checked,
+      order: newOrder,
+    }
+
+    try{
+      const response = await fetch(`/updatetask/${reorderedItem.id}`,{
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateTask)
+      })
+
+      const updatedTask = await response.json()
+      console.log(updateTask)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (
@@ -26,7 +55,7 @@ function ToDoList({todos, setTodos, setTodoList}) {
                       return (
                         <Draggable key={todo.id} draggableId={todo.id.toString()} index={index}>
                           {(provided) => (
-                            <ToDoItem provided={provided} id={todo.id} setTodos={setTodos} todo={todo.todo} checked={todo.checked} />
+                            <ToDoItem innerRef={provided.innerRef} provided={provided} id={todo.id} setTodos={setTodos} todo={todo.todo} checked={todo.checked} deleteTodo={deleteTodo} order={todo.order}/>
                           )}
                         </Draggable>
                       )
