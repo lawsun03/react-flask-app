@@ -12,7 +12,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "npm run watch:css && react-scripts start",
+    "start": "yarn run watch:css && react-scripts start",
     "start-api": "cd api && venv/bin/flask run",
     "build": "npm run watch:css && react-scripts build",
     "test": "react-scripts test",
