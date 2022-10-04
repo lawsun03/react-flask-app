@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ToDoList from './components/ToDoList'
+import ToDoList from './components/ToDoList';
 import './assets/App.css';
 
 function App() {
