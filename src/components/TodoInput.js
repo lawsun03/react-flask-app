@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 
 function ToDoInput({ todos, setTodoList, setTodos }) {
     const [newTask, setNewTask] = useState('')
 
     const createNewTodo = async (e) => {
         e.preventDefault()
+        const id = uuid()
 
         const newTodo = {
+            id: id,
             todo: newTask,
             checked: false,
             order: todos[todos.length - 1] ? todos[todos.length - 1].order + 1 : 1
         }
+
+        console.log('newTodo', newTodo)
+        setNewTask('')
+        setTodoList([...todos, newTodo])
 
         try {
             const response = await fetch('/addtask', {
@@ -25,8 +32,6 @@ function ToDoInput({ todos, setTodoList, setTodos }) {
             const data = await response.json()
             console.log('newTodo',newTodo)
             console.log('response', data)
-            setNewTask('')
-            setTodoList([...todos, {...newTodo, id:data.id}])
         } catch (e) {
             console.log(e)
         }
@@ -37,11 +42,11 @@ function ToDoInput({ todos, setTodoList, setTodos }) {
 
         <div>
             <form onSubmit={ (e) => createNewTodo(e)}>
-                <div className='todo-item p-4'>
+                <div className=' p-4'>
                     <input onChange={(e) => setNewTask(e.target.value)} value={newTask} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Add a new task..." required />
                 </div>
 
-                <div className='todo-item pl-4'>
+                <div className='pl-4'>
                     <button type="submit" className="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 mr-2 mb-2">
                         Add Task
                     </button>

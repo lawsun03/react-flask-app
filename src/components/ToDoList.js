@@ -3,7 +3,7 @@ import ToDoItem from './ToDoItem'
 import ToDoInput from './TodoInput'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
-function ToDoList({todos, setTodos, setTodoList, deleteTodo}) {
+function ToDoList({ todos, setTodos, setTodoList, deleteTodo }) {
 
   async function handleOnDragEnd(result) {
     if (!result.destination) return;
@@ -26,12 +26,12 @@ function ToDoList({todos, setTodos, setTodoList, deleteTodo}) {
       order: newOrder,
     }
 
-    try{
-      const response = await fetch(`/updatetask/${reorderedItem.id}`,{
+    try {
+      const response = await fetch(`/updatetask/${reorderedItem.id}`, {
         method: 'PUT',
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(updateTask)
       })
@@ -44,32 +44,43 @@ function ToDoList({todos, setTodos, setTodoList, deleteTodo}) {
   }
 
   return (
-    <div className='p-4'>
-        <div className="w-[24.5rem] divide-y divide-slate-400/20 rounded-lg bg-white text-[0.8125rem] leading-5 text-slate-900 shadow-black/1 ring-1 ring-slate-700/10 shadow-2xl">
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId='todos'>
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {
-                    todos.map((todo, index) => {
-                      return (
-                        <Draggable key={todo.id} draggableId={todo.id.toString()} index={index}>
-                          {(provided) => (
-                            <ToDoItem innerRef={provided.innerRef} provided={provided} id={todo.id} setTodos={setTodos} todo={todo.todo} checked={todo.checked} deleteTodo={deleteTodo} order={todo.order}/>
-                          )}
-                        </Draggable>
-                      )
-                    })
-                  }
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+    <div className='pt-5 todo-container'>
+      <div className="divide-y divide-slate-400/20 bg-white leading-5 shadow-2xl todo-box">
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId='todos'>
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {
+                  todos.map((todoItem, index) => {
+                    console.log(todoItem)
+                    const { id, checked, todo, order } = todoItem
 
-          <ToDoInput todos={todos} setTodoList={setTodoList} setTodos={setTodos}/>
+                    return (
+                      <Draggable key={id} draggableId={id} index={index}>
+                        {(provided, snapshot) => (
+                          <ToDoItem
+                            isDragging={snapshot.isDragging}
+                            innerRef={provided.innerRef}
+                            provided={provided}
+                            id={id}
+                            setTodos={setTodos}
+                            todo={todo}
+                            checked={checked}
+                            deleteTodo={deleteTodo}
+                            order={order} />
+                        )}
+                      </Draggable>
+                    )
+                  })
+                }
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
 
-        </div>
+        <ToDoInput todos={todos} setTodoList={setTodoList} setTodos={setTodos} />
+      </div>
     </div>
   );
 }
