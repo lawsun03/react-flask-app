@@ -46,6 +46,8 @@ function ToDoList({ todos, setTodos, setTodoList, deleteTodo }) {
   return (
     <div className='pt-5 todo-container'>
       <div className="divide-y divide-slate-400/20 bg-white leading-5 shadow-2xl todo-box">
+        <ToDoInput todos={todos} setTodoList={setTodoList} setTodos={setTodos} />
+
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='todos'>
             {(provided) => (
@@ -79,7 +81,6 @@ function ToDoList({ todos, setTodos, setTodoList, deleteTodo }) {
           </Droppable>
         </DragDropContext>
 
-        <ToDoInput todos={todos} setTodoList={setTodoList} setTodos={setTodos} />
       </div>
     </div>
   );

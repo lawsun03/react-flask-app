@@ -121,3 +121,12 @@ p {
 .todo-box {
   border-radius: 0.75rem;
 }
+
+.todo-input{
+  width: 80%;
+  margin-right: 10px;
+}
+
+.todo-button {
+  width: 18%;
+}

@@ -13,12 +13,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{db_password}@lo
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 class Todos(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(100), primary_key=True)
     task_name = db.Column(db.String(80), nullable=False)
     checked = db.Column(db.Boolean, nullable=False)
     order = db.Column(db.Float(precision=2), nullable=True)
 
-    def __init__(self, task_name, checked, order):
+    def __init__(self, id, task_name, checked, order):
+        self.id = id
         self.task_name = task_name
         self.checked = checked
         self.order = order
@@ -38,7 +39,8 @@ def add_task():
     task_name = request.json['todo']
     checked = request.json['checked']
     order = request.json['order']
-    todo = Todos(task_name,checked, order)
+    id = request.json['id']
+    todo = Todos(id, task_name, checked, order)
     db.session.add(todo)
     db.session.commit()
     return format_todo(todo)
