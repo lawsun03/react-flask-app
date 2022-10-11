@@ -1,0 +1,132 @@
+
+@media only screen and (min-width: 320px) and (max-width: 480px){
+
+  .App-header {
+    background-color: rgb(221, 218, 218);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 4rem;
+    font-weight: 600;
+  }
+
+  .todo-container {
+    width: 90%;
+  }
+  
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px){
+  
+  .App-header {
+    background-color: rgb(221, 218, 218);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 4.5rem;
+    font-weight: 600;
+  }
+
+  .todo-container {
+    width: 80%;
+  }
+
+}
+
+
+@media only screen and (min-width: 769px) and (max-width: 1024px){
+
+  .App-header {
+    background-color: rgb(221, 218, 218);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 4rem;
+    font-weight: 600;
+  }
+
+  .todo-container {
+    width: 80%;
+  }
+  
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px){
+
+  .App-header {
+    background-color: rgb(221, 218, 218);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 4rem;
+    font-weight: 600;
+  }
+
+  .todo-container {
+    width: 60%;
+  }
+
+}
+
+
+@media only screen and (min-width: 1201px) {
+
+  .App-header {
+    background-color: rgb(221, 218, 218);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 4rem;
+    font-weight: 600;
+  }
+
+  .todo-container {
+    width: 45%;
+  }
+  
+}
+
+p {
+  text-align: center;
+  min-height: 80vh;
+}
+
+
+.background {
+  height: 80vh;
+  background-color: green;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 1rem;
+  background-color: rgb(255, 255, 255);
+  height:fit-content;
+  width: auto;
+  border-radius: 0.75rem;
+}
+
+.dragging {
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  /* border-radius: 0.75rem; */
+}
+
+.todo-box {
+  border-radius: 0.75rem;
+}
+
+.todo-input{
+  width: 80%;
+  margin-right: 10px;
+}
+
+.todo-button {
+  width: 18%;
+}
