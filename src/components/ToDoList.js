@@ -3,11 +3,18 @@ import ToDoItem from './ToDoItem'
 import ToDoInput from './TodoInput'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
-function ToDoList({ todos, setTodos, setTodoList, deleteTodo }) {
+import { connect } from 'react-redux'
+import { setTodoList, updateTask } from '../store/actions/todoList'
+
+function ToDoList({ todoList, setTodoList }) {
+
+  useEffect(() => {
+    setTodoList()
+  },[])
 
   async function handleOnDragEnd(result) {
     if (!result.destination) return;
-    const items = Array.from(todos)
+    const items = Array.from(todoList)
     const [reorderedItem] = items.splice(result.source.index, 1)
 
     let referenceIndMinus = items[result.destination.index - 1] ? items[result.destination.index - 1].order : 0
@@ -20,41 +27,28 @@ function ToDoList({ todos, setTodos, setTodoList, deleteTodo }) {
 
     setTodoList(items)
 
-    const updateTask = {
+    const updatedTask = {
+      id: reorderedItem.id,
       todo: reorderedItem.todo,
       checked: reorderedItem.checked,
       order: newOrder,
     }
 
-    try {
-      const response = await fetch(`/updatetask/${reorderedItem.id}`, {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateTask)
-      })
+    updateTask(updatedTask)
 
-      const updatedTask = await response.json()
-      console.log(updateTask)
-    } catch (e) {
-      console.log(e)
-    }
   }
 
   return (
     <div className='pt-5 todo-container'>
       <div className="divide-y divide-slate-400/20 bg-white leading-5 shadow-2xl todo-box">
-        <ToDoInput todos={todos} setTodoList={setTodoList} setTodos={setTodos} />
+        <ToDoInput />
 
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='todos'>
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
                 {
-                  todos.map((todoItem, index) => {
-                    console.log(todoItem)
+                  todoList.map((todoItem, index) => {
                     const { id, checked, todo, order } = todoItem
 
                     return (
@@ -65,10 +59,8 @@ function ToDoList({ todos, setTodos, setTodoList, deleteTodo }) {
                             innerRef={provided.innerRef}
                             provided={provided}
                             id={id}
-                            setTodos={setTodos}
                             todo={todo}
                             checked={checked}
-                            deleteTodo={deleteTodo}
                             order={order} />
                         )}
                       </Draggable>
@@ -86,4 +78,8 @@ function ToDoList({ todos, setTodos, setTodoList, deleteTodo }) {
   );
 }
 
-export default ToDoList;
+const mapStateToProps = (state) => ({
+  todoList: state.todoList,
+})
+
+export default connect(mapStateToProps, {setTodoList})(ToDoList)

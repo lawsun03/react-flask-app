@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
+import React, { useState, useEffect } from 'react'
+import { v4 as uuid } from 'uuid'
+import { connect } from 'react-redux'
+import { startCreateTask } from '../store/actions/todoList'
 
-function ToDoInput({ todos, setTodoList, setTodos }) {
+function ToDoInput({ todoList, startCreateTask }) {
     const [newTask, setNewTask] = useState('')
 
     const createNewTodo = async (e) => {
@@ -12,30 +14,11 @@ function ToDoInput({ todos, setTodoList, setTodos }) {
             id: id,
             todo: newTask,
             checked: false,
-            order: todos[todos.length - 1] ? todos[todos.length - 1].order + 1 : 1
+            order: todoList[todoList.length - 1] ? todoList[todoList.length - 1].order + 1 : 1
         }
 
-        console.log('newTodo', newTodo)
         setNewTask('')
-        setTodoList([...todos, newTodo])
-
-        try {
-            const response = await fetch('/addtask', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newTodo)
-            })
-
-            const data = await response.json()
-            console.log('newTodo',newTodo)
-            console.log('response', data)
-        } catch (e) {
-            console.log(e)
-        }
-
+        startCreateTask(newTodo)
     }
 
     return (
@@ -53,4 +36,8 @@ function ToDoInput({ todos, setTodoList, setTodos }) {
     );
 }
 
-export default ToDoInput;
+const mapStateToProps = (state) => ({
+    todoList: state.todoList,
+  })
+  
+export default connect(mapStateToProps, { startCreateTask })(ToDoInput)
