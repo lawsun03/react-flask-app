@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ToDoList from './components/ToDoList';
+import GoogleOAuth from './components/GoogleOAuth';
 import './assets/App.css';
 
 function App() {
@@ -15,4 +16,4 @@ function App() {
 }
 
 
-export default (App)
+export default App
