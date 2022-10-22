@@ -19,5 +19,3 @@ export function todoListReducer (state = initialState, action) {
     }
 }
 
-// selectors
-export const getList = (state) => state

@@ -10,6 +10,7 @@ function App() {
       <header className="App-header pt-5">
         To-Do List
         <ToDoList />
+        <GoogleOAuth />
       </header>
     </div>
   )
